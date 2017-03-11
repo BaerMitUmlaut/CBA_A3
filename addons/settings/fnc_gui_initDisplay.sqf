@@ -111,15 +111,6 @@ uiNamespace setVariable [QGVAR(ctrlButtonExport), _ctrlButtonExport];
     _x ctrlAddEventHandler ["ButtonClick", FUNC(gui_sourceChanged)];
 } forEach [_display displayCtrl IDC_BTN_SERVER, _display displayCtrl IDC_BTN_CLIENT, _display displayCtrl IDC_BTN_MISSION];
 
-GVAR(clientSettingsTemp) call CBA_fnc_deleteNamespace;
-GVAR(clientSettingsTemp) = [] call CBA_fnc_createNamespace;
-
-GVAR(serverSettingsTemp) call CBA_fnc_deleteNamespace;
-GVAR(serverSettingsTemp) = [] call CBA_fnc_createNamespace;
-
-GVAR(missionSettingsTemp) call CBA_fnc_deleteNamespace;
-GVAR(missionSettingsTemp) = [] call CBA_fnc_createNamespace;
-
 (_display displayCtrl IDC_BTN_CONFIGURE_ADDONS) ctrlAddEventHandler ["ButtonClick", FUNC(gui_configure)];
 
 // ----- scripted OK button

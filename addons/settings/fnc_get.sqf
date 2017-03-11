@@ -6,7 +6,8 @@ Description:
 
 Parameters:
     _setting - Name of the setting <STRING>
-    _source  - Can be "server", "mission", "client", "forced" or "default" (optional, default: "forced") <STRING>
+    _source  - Can be "server", "mission", "client", "priority" or "default" (optional, default: "priority") <STRING>
+    _temp    - Use temporary value if available (optional, default: false) <BOOL>
 
 Returns:
     Value of the setting <ANY>
@@ -21,33 +22,37 @@ Author:
 ---------------------------------------------------------------------------- */
 #include "script_component.hpp"
 
-params [["_setting", "", [""]], ["_source", "forced", [""]]];
+params [["_setting", "", [""]], ["_source", "priority", [""]], ["_temp", false, [false]]];
 
 private _value = switch (toLower _source) do {
-    case "server": {
-        GET_VALUE(serverSettings,_setting);
-    };
     case "client": {
-        GET_VALUE(clientSettings,_setting);
+        if (_temp) then {
+            (GVAR(clientSettingsTemp) getVariable [_setting, GVAR(clientSettings) getVariable _setting]) select 0
+        } else {
+            (GVAR(clientSettings) getVariable _setting) select 0
+        };
     };
     case "mission": {
-        GET_VALUE(missionSettings,_setting);
+        if (_temp) then {
+            (GVAR(missionSettingsTemp) getVariable [_setting, GVAR(missionSettings) getVariable _setting]) select 0
+        } else {
+            (GVAR(missionSettings) getVariable _setting) select 0
+        };
+    };
+    case "server": {
+        if (_temp) then {
+            (GVAR(serverSettingsTemp) getVariable [_setting, GVAR(serverSettings) getVariable _setting]) select 0
+        } else {
+            (GVAR(serverSettings) getVariable _setting) select 0
+        };
+    };
+    case "priority": {
+        private _source = [_setting, _temp] call FUNC(priority);
+
+        [_setting, _source, _temp] call FUNC(get);
     };
     case "default": {
-        GET_VALUE(defaultSettings,_setting);
-    };
-    case "forced": {
-        private _value = [_setting, "client"] call FUNC(get);
-
-        if ([_setting, "mission"] call FUNC(getForced)) then {
-            _value = [_setting, "mission"] call FUNC(get);
-        };
-
-        if ([_setting, "server"] call FUNC(getForced)) then {
-            _value = [_setting, "server"] call FUNC(get);
-        };
-
-        if (isNil "_value") then {nil} else {_value};
+        (GVAR(defaultSettings) getVariable _setting) select 0
     };
     default {
         _source = "default"; // exit
@@ -58,7 +63,7 @@ if (isNil "_value") exitWith {
     // setting does not seem to exist
     if (_source == "default") exitWith {nil};
 
-    [_setting, "default"] call FUNC(get);
+    [_setting, "default", _temp] call FUNC(get);
 };
 
 // copy array to prevent overwriting

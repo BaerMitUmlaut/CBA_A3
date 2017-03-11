@@ -17,5 +17,10 @@ if (isNil QGVAR(defaultSettings)) then {
 
     GVAR(missionSettings) = [] call CBA_fnc_createNamespace;
 
+    // temp namespaces for settings menu
+    GVAR(clientSettingsTemp) = [] call CBA_fnc_createNamespace;
+    GVAR(serverSettingsTemp) = [] call CBA_fnc_createNamespace;
+    GVAR(missionSettingsTemp) = [] call CBA_fnc_createNamespace;
+
     #include "initMissionSettings.sqf"
 };

@@ -76,9 +76,6 @@
 // replacement for "LOCATION getVariable [STRING, ANY]"
 #define NAMESPACE_GETVAR(namespace,varname,default) ([namespace getVariable varname] param [0, default])
 
-#define GET_VALUE(namespace,setting) ((GVAR(namespace) getVariable setting) param [0])
-#define GET_FORCED(namespace,setting) (NAMESPACE_GETVAR(GVAR(namespace),setting,[]) param [1, false])
-
 #define GET_TEMP_NAMESPACE(source) ([ARR_3(GVAR(clientSettingsTemp),GVAR(serverSettingsTemp),GVAR(missionSettingsTemp))] param [[ARR_3('client','server','mission')] find toLower source])
 #define SET_TEMP_NAMESPACE_VALUE(setting,value,source)   GET_TEMP_NAMESPACE(source) setVariable [ARR_2(setting,[ARR_2(value,(GET_TEMP_NAMESPACE(source) getVariable setting) param [1])])]
 #define SET_TEMP_NAMESPACE_FORCED(setting,forced,source) GET_TEMP_NAMESPACE(source) setVariable [ARR_2(setting,[ARR_2((GET_TEMP_NAMESPACE(source) getVariable setting) param [0],forced)])]
