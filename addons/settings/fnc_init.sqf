@@ -121,7 +121,7 @@ GVAR(defaultSettings) setVariable [_setting, [_defaultValue, _setting, _settingT
 GVAR(allSettings) pushBackUnique _setting;
 
 // --- read previous setting values from profile
-private _settingsHash = profileNamespace getVariable [QGVAR(hash), NULL_HASH];
+private _settingsHash = profileNamespace getVariable [QGVAR(hash), HASH_NULL];
 private _settingInfo = [_settingsHash, toLower _setting] call CBA_fnc_hashGet;
 
 if (!isNil "_settingInfo") then {
@@ -144,7 +144,7 @@ if (!isNil "_settingInfo") then {
 _settingsHash = getMissionConfigValue QGVAR(hash);
 
 if (isNil "_settingsHash") then {
-    _settingsHash = NULL_HASH;
+    _settingsHash = HASH_NULL;
 };
 
 _settingInfo = [_settingsHash, toLower _setting] call CBA_fnc_hashGet;

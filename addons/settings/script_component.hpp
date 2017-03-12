@@ -83,13 +83,13 @@
 #define GET_TEMP_NAMESPACE_VALUE(setting,source)  ((GET_TEMP_NAMESPACE(source) getVariable setting) param [0])
 #define GET_TEMP_NAMESPACE_FORCED(setting,source) ((GET_TEMP_NAMESPACE(source) getVariable setting) param [1])
 
-#define NULL_HASH ([] call CBA_fnc_hashCreate)
+#define HASH_NULL ([] call CBA_fnc_hashCreate)
+#define NAMESPACE_NULL locationNull
 
 #define ASCII_NEWLINE 10
 #define ASCII_CARRIAGE_RETURN 13
 #define ASCII_TAB 9
 #define ASCII_SPACE 32
-
 #define WHITE_SPACE [ASCII_NEWLINE, ASCII_CARRIAGE_RETURN, ASCII_TAB, ASCII_SPACE]
 
 #define ICON_ON  "a3\ui_f\data\IGUI\Cfg\Actions\ico_ON_ca.paa"

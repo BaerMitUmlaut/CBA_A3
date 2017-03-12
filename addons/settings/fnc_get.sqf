@@ -48,14 +48,14 @@ private _value = switch (toLower _source) do {
     };
     case "priority": {
         private _source = [_setting, _temp] call FUNC(priority);
-
-        [_setting, _source, _temp] call FUNC(get);
+        [_setting, _source, _temp] call FUNC(get)
     };
     case "default": {
         (GVAR(defaultSettings) getVariable _setting) select 0
     };
     default {
         _source = "default"; // exit
+        nil
     };
 };
 
@@ -66,5 +66,5 @@ if (isNil "_value") exitWith {
     [_setting, "default", _temp] call FUNC(get);
 };
 
-// copy array to prevent overwriting
+// copy array to prevent accidental overwriting
 if (_value isEqualType []) then {+_value} else {_value}

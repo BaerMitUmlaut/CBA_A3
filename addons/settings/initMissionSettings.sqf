@@ -1,21 +1,15 @@
 // inline function, don't include script_component.hpp
 
-0 = 0 spawn {
-    {
-        // --- read previous setting values from mission
-        private _settingsHash = getMissionConfigValue QGVAR(hash);
+// delay a frame, necause 3den attributes are unavailable at frame 0
+// cannot use CBA_fnc_execNextFrame, because we need this to run before postInit
+addMissionEventHandler ["EachFrame", {
+    // --- read previous setting values from mission
+    private _settingsHash = getMissionConfigValue [QGVAR(hash), HASH_NULL];
+    GVAR(missionSettings) call CBA_fnc_deleteNamespace;
+    GVAR(missionSettings) = [_settingsHash] call CBA_fnc_deserializeNamespace;
 
-        if (isNil "_settingsHash") then {
-            _settingsHash = NULL_HASH;
-        };
+    // --- refresh all settings now
+    QGVAR(refreshAllSettings) call CBA_fnc_localEvent;
 
-        [_settingsHash, {
-            _value params ["_value", "_forced"];
-
-            GVAR(missionSettings) setVariable [_key, [_value, _forced]];
-        }] call CBA_fnc_hashEachPair;
-
-        // --- refresh all settings now
-        QGVAR(refreshAllSettings) call CBA_fnc_localEvent;
-    } call CBA_fnc_directCall;
-};
+    removeMissionEventHandler ["EachFrame", _thisEventHandler];
+}];

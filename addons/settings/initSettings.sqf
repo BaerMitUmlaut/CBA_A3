@@ -1,26 +1,21 @@
 // inline function, don't include script_component.hpp
 
 if (isNil QGVAR(defaultSettings)) then {
-    GVAR(defaultSettings) = [] call CBA_fnc_createNamespace;
     GVAR(allSettings) = [];
+    GVAR(defaultSettings) = [] call CBA_fnc_createNamespace;
 
-    GVAR(clientSettings) = [] call CBA_fnc_createNamespace;
-
-    if (isMultiplayer) then {
-        if (isServer) then {
-            GVAR(serverSettings) = true call CBA_fnc_createNamespace;
-            publicVariable QGVAR(serverSettings);
-        };
-    } else {
-        GVAR(serverSettings) = false call CBA_fnc_createNamespace;
+    // --- main setting sources
+    if (isServer) then {
+        missionNamespace setVariable [QGVAR(serverSettings), true call CBA_fnc_createNamespace, true];
     };
 
-    GVAR(missionSettings) = [] call CBA_fnc_createNamespace;
+    GVAR(missionSettings) = NAMESPACE_NULL;
+    GVAR(clientSettings) = [] call CBA_fnc_createNamespace;
 
-    // temp namespaces for settings menu
-    GVAR(clientSettingsTemp) = [] call CBA_fnc_createNamespace;
+    // --- temp setting sources for settings menu
     GVAR(serverSettingsTemp) = [] call CBA_fnc_createNamespace;
     GVAR(missionSettingsTemp) = [] call CBA_fnc_createNamespace;
+    GVAR(clientSettingsTemp) = [] call CBA_fnc_createNamespace;
 
     #include "initMissionSettings.sqf"
 };

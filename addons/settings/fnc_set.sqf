@@ -54,7 +54,7 @@ switch (toLower _source) do {
 
         GVAR(clientSettings) setVariable [_setting, [_value, _forced]];
 
-        private _settingsHash = profileNamespace getVariable [QGVAR(hash), NULL_HASH];
+        private _settingsHash = profileNamespace getVariable [QGVAR(hash), HASH_NULL];
         [_settingsHash, toLower _setting, [_value, _forced]] call CBA_fnc_hashSet;
         profileNamespace setVariable [QGVAR(hash), _settingsHash];
 
@@ -83,7 +83,7 @@ switch (toLower _source) do {
                 GVAR(serverSettings) setVariable [_setting, [_value, _forced]];
             };
 
-            private _settingsHash = profileNamespace getVariable [QGVAR(hash), NULL_HASH];
+            private _settingsHash = profileNamespace getVariable [QGVAR(hash), HASH_NULL];
             [_settingsHash, toLower _setting, [_value, _forced]] call CBA_fnc_hashSet;
             profileNamespace setVariable [QGVAR(hash), _settingsHash];
 

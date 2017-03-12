@@ -20,7 +20,7 @@ class Cfg3DEN {
                             control = "CBA_CategoryHider";
                             displayName = "";
                             tooltip = "";
-                            defaultValue = QUOTE(NULL_HASH);
+                            defaultValue = QUOTE(HASH_NULL);
                             expression = "";
                             wikiType = "[[Array]]";
                         };

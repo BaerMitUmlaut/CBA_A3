@@ -19,21 +19,21 @@ params [["_source", "client", [""]]];
 
 switch (toLower _source) do {
     case "client": {
-        profileNamespace setVariable [QGVAR(hash), NULL_HASH];
+        profileNamespace setVariable [QGVAR(hash), HASH_NULL];
         GVAR(clientSettings) call CBA_fnc_deleteNamespace;
         GVAR(clientSettings) = [] call CBA_fnc_createNamespace;
     };
     case "mission": {
         if (!is3DEN) exitWith {};
 
-        set3DENMissionAttributes [["Scenario", QGVAR(hash), NULL_HASH]];
+        set3DENMissionAttributes [["Scenario", QGVAR(hash), HASH_NULL]];
         GVAR(missionSettings) call CBA_fnc_deleteNamespace;
         GVAR(missionSettings) = [] call CBA_fnc_createNamespace;
     };
     case "server": {
         if (!isServer) exitWith {};
 
-        profileNamespace setVariable [QGVAR(hash), NULL_HASH];
+        profileNamespace setVariable [QGVAR(hash), HASH_NULL];
         GVAR(serverSettings) call CBA_fnc_deleteNamespace;
         GVAR(serverSettings) = isMultiplayer call CBA_fnc_createNamespace;
         publicVariable QGVAR(serverSettings);
