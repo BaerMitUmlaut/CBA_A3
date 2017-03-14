@@ -38,7 +38,7 @@ _ctrlSettingPriority ctrlAddEventHandler ["LBSelChanged", {
 
     private _value = _data select _index;
 
-    SET_TEMP_NAMESPACE_FORCED(_setting,_value,_source);
+    SET_TEMP_NAMESPACE_PRIORITY(_setting,_value,_source);
 }];
 
 _linkedControls pushBack _ctrlSettingPriority;

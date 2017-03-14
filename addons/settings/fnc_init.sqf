@@ -73,10 +73,10 @@ private "_defaultValue";
 private _settingData = [];
 
 switch (toUpper _settingType) do {
-    case ("CHECKBOX"): {
+    case "CHECKBOX": {
         _defaultValue = _valueInfo param [0, false, [false]]; // don't use params - we want these variables to be private to the main scope
     };
-    case ("LIST"): {
+    case "LIST": {
         _valueInfo params [["_values", [], [[]]], ["_labels", [], [[]]], ["_defaultIndex", 0, [0]]];
 
         if (_values isEqualTo []) then {
@@ -102,13 +102,13 @@ switch (toUpper _settingType) do {
         _defaultValue = _values param [_defaultIndex];
         _settingData append [_values, _labels];
     };
-    case ("SLIDER"): {
+    case "SLIDER": {
         _valueInfo params [["_min", 0, [0]], ["_max", 1, [0]], ["_default", 0, [0]], ["_trailingDecimals", 2, [0]]];
 
         _defaultValue = _default;
         _settingData append [_min, _max, _trailingDecimals];
     };
-    case ("COLOR"): {
+    case "COLOR": {
         _defaultValue = [_valueInfo] param [0, [1,1,1], [[]], [3,4]];
     };
     default {/* _defaultValue undefined, exit below */};

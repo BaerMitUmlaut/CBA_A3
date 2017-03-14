@@ -73,18 +73,27 @@
     #define CAN_VIEW_MISSION_SETTINGS true
 #endif
 
-// replacement for "LOCATION getVariable [STRING, ANY]"
-#define NAMESPACE_GETVAR(namespace,varname,default) ([namespace getVariable varname] param [0, default])
-
-#define GET_TEMP_NAMESPACE(source) ([ARR_3(GVAR(clientSettingsTemp),GVAR(serverSettingsTemp),GVAR(missionSettingsTemp))] param [[ARR_3('client','server','mission')] find toLower source])
-#define SET_TEMP_NAMESPACE_VALUE(setting,value,source)   GET_TEMP_NAMESPACE(source) setVariable [ARR_2(setting,[ARR_2(value,(GET_TEMP_NAMESPACE(source) getVariable setting) param [1])])]
-#define SET_TEMP_NAMESPACE_FORCED(setting,forced,source) GET_TEMP_NAMESPACE(source) setVariable [ARR_2(setting,[ARR_2((GET_TEMP_NAMESPACE(source) getVariable setting) param [0],forced)])]
-
-#define GET_TEMP_NAMESPACE_VALUE(setting,source)  ((GET_TEMP_NAMESPACE(source) getVariable setting) param [0])
-#define GET_TEMP_NAMESPACE_FORCED(setting,source) ((GET_TEMP_NAMESPACE(source) getVariable setting) param [1])
-
 #define HASH_NULL ([] call CBA_fnc_hashCreate)
 #define NAMESPACE_NULL locationNull
+
+#define GET_TEMP_NAMESPACE(source) ([GVAR(serverSettingsTemp), GVAR(missionSettingsTemp), GVAR(clientSettingsTemp)] param [['server', 'mission', 'client'] find toLower source, NAMESPACE_NULL])
+#define GET_TEMP_NAMESPACE_VALUE(setting,source)    (GET_TEMP_NAMESPACE(source) getVariable [setting, [nil, nil]] select 0)
+#define GET_TEMP_NAMESPACE_PRIORITY(setting,source) (GET_TEMP_NAMESPACE(source) getVariable [setting, [nil, nil]] select 1)
+
+#define SET_TEMP_NAMESPACE_VALUE(setting,value,source)       GET_TEMP_NAMESPACE(source) setVariable [setting, [value, GET_TEMP_NAMESPACE_PRIORITY(setting,source)]]
+#define SET_TEMP_NAMESPACE_PRIORITY(setting,priority,source) GET_TEMP_NAMESPACE(source) setVariable [setting, [GET_TEMP_NAMESPACE_VALUE(setting,source), priority]]
+
+#define TEMP_PRIORITY(setting) (['server', 'mission', 'client'] select selectMax [\
+    GVAR(serverSettingsTemp)  getVariable [setting, [nil, GVAR(serverSettings)  getVariable [setting, [nil, 0]] select 1]] select 1,\
+    GVAR(missionSettingsTemp) getVariable [setting, [nil, GVAR(missionSettings) getVariable [setting, [nil, 0]] select 1]] select 1,\
+    GVAR(clientSettingsTemp)  getVariable [setting, [nil, GVAR(clientSettings)  getVariable [setting, [nil, 0]] select 1]] select 1\
+])
+
+#define TEMP_VALUE(setting) ([\
+    GVAR(serverSettingsTemp)  getVariable [setting, [[setting,  'server'] call FUNC(get), nil]] select 0,\
+    GVAR(missionSettingsTemp) getVariable [setting, [[setting, 'mission'] call FUNC(get), nil]] select 0,\
+    GVAR(clientSettingsTemp)  getVariable [setting, [[setting,  'client'] call FUNC(get), nil]] select 0\
+] select (['server', 'mission', 'client'] find TEMP_PRIORITY(setting)))
 
 #define ASCII_NEWLINE 10
 #define ASCII_CARRIAGE_RETURN 13

@@ -24,7 +24,7 @@ ADDON = false;
 
     if (isNil QGVAR(ready)) exitWith {};
 
-    private _script = NAMESPACE_GETVAR(GVAR(defaultSettings),_setting,[]) param [8, {}];
+    private _script = (GVAR(defaultSettings) getVariable [_setting, []]) param [8, {}];
     [_value, _script] call {
         private ["_setting", "_value", "_script"]; // prevent these variables from being overwritten
         (_this select 0) call (_this select 1);
@@ -58,23 +58,16 @@ addMissionEventHandler ["Loaded", {
 // event to modify settings on a dedicated server as admin
 if (isServer) then {
     [QGVAR(setSettingServer), {
-        params ["_setting", "_value", "_forced"];
-        [_setting, _value, _forced, "server"] call FUNC(set);
+        params ["_setting", "_value", "_priority"];
+        [_setting, _value, _priority, "server"] call FUNC(set);
     }] call CBA_fnc_addEventHandler;
 };
 
 // event to modify mission settings
 [QGVAR(setSettingMission), {
-    params ["_setting", "_value", ["_forced", false, [false]]];
+    params ["_setting", "_value", ["_priority", 0]];
 
-    if ([_setting, "mission"] call FUNC(getForced)) exitWith {
-        LOG_1("Setting %1 already forced, ignoring setSettingMission.",str _setting);
-    };
-    if (!([_setting, _value] call FUNC(check))) exitWith {
-        WARNING_2("Value %1 is invalid for setting %2.",_value,str _setting);
-    };
-
-    GVAR(missionSettings) setVariable [_setting, [_value, _forced]];
+    [_setting, _value, _priority, "mission"] call FUNC(set); // @todo 3den only atm
 }] call CBA_fnc_addEventHandler;
 
 ADDON = true;

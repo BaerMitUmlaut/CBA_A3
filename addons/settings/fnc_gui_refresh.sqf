@@ -14,14 +14,14 @@ private _controls = _ctrlOptionsGroup getVariable [QGVAR(controls), []];
     // --- reset settings controls to current state
     if (!isNil "_value") then {
         switch (toUpper _settingType) do {
-            case ("CHECKBOX"): {
+            case "CHECKBOX": {
                 _linkedControls params ["_ctrlSetting", "_defaultControl"];
 
                 _ctrlSetting cbSetChecked _value;
 
                 _defaultControl ctrlEnable !(_value isEqualTo _defaultValue);
             };
-            case ("LIST"): {
+            case "LIST": {
                 _settingData params ["_values"];
                 _linkedControls params ["_ctrlSetting", "_defaultControl"];
 
@@ -29,7 +29,7 @@ private _controls = _ctrlOptionsGroup getVariable [QGVAR(controls), []];
 
                 _defaultControl ctrlEnable !(_value isEqualTo _defaultValue);
             };
-            case ("SLIDER"): {
+            case "SLIDER": {
                 _settingData params ["", "", "_trailingDecimals"];
                 _linkedControls params ["_ctrlSetting", "_ctrlSettingEdit", "_defaultControl"];
 
@@ -38,7 +38,7 @@ private _controls = _ctrlOptionsGroup getVariable [QGVAR(controls), []];
                 
                 _defaultControl ctrlEnable !(_value isEqualTo _defaultValue);
             };
-            case ("COLOR"): {
+            case "COLOR": {
                 _linkedControls params ["_ctrlSettingPreview", "_settingControls", "_defaultControl"];
 
                 _value params [
@@ -64,18 +64,18 @@ private _controls = _ctrlOptionsGroup getVariable [QGVAR(controls), []];
         };
     };
 
-    private _forced = GET_TEMP_NAMESPACE_FORCED(_setting,_source);
+    private _forced = GET_TEMP_NAMESPACE_PRIORITY(_setting,_source);
 
     // --- reset force buttons to current state
     if (!isNil "_forced") then {
         switch (toUpper _settingType) do {
-            case ("CHECKBOX");
-            case ("LIST"): {
+            case "CHECKBOX";
+            case "LIST": {
                 private _ctrlSettingForce = _linkedControls param [2, controlNull];
                 _ctrlSettingForce cbSetChecked _forced;
             };
-            case ("SLIDER");
-            case ("COLOR"): {
+            case "SLIDER";
+            case "COLOR": {
                 private _ctrlSettingForce = _linkedControls param [3, controlNull];
                 _ctrlSettingForce cbSetChecked _forced;
             };

@@ -7,7 +7,6 @@ Description:
 Parameters:
     _setting - Name of the setting <STRING>
     _source  - Can be "server", "mission", "client", "priority" or "default" (optional, default: "priority") <STRING>
-    _temp    - Use temporary value if available (optional, default: false) <BOOL>
 
 Returns:
     Value of the setting <ANY>
@@ -22,36 +21,24 @@ Author:
 ---------------------------------------------------------------------------- */
 #include "script_component.hpp"
 
-params [["_setting", "", [""]], ["_source", "priority", [""]], ["_temp", false, [false]]];
+params [["_setting", "", [""]], ["_source", "priority", [""]]];
 
 private _value = switch (toLower _source) do {
-    case "client": {
-        if (_temp) then {
-            (GVAR(clientSettingsTemp) getVariable [_setting, GVAR(clientSettings) getVariable _setting]) select 0
-        } else {
-            (GVAR(clientSettings) getVariable _setting) select 0
-        };
+    case "server": {
+        GVAR(serverSettings)  getVariable [_setting, [nil, nil]] select 0
     };
     case "mission": {
-        if (_temp) then {
-            (GVAR(missionSettingsTemp) getVariable [_setting, GVAR(missionSettings) getVariable _setting]) select 0
-        } else {
-            (GVAR(missionSettings) getVariable _setting) select 0
-        };
+        GVAR(missionSettings) getVariable [_setting, [nil, nil]] select 0
     };
-    case "server": {
-        if (_temp) then {
-            (GVAR(serverSettingsTemp) getVariable [_setting, GVAR(serverSettings) getVariable _setting]) select 0
-        } else {
-            (GVAR(serverSettings) getVariable _setting) select 0
-        };
+    case "client": {
+        GVAR(clientSettings)  getVariable [_setting, [nil, nil]] select 0
     };
     case "priority": {
-        private _source = [_setting, _temp] call FUNC(priority);
-        [_setting, _source, _temp] call FUNC(get)
+        private _source = _setting call FUNC(priority);
+        [_setting, _source] call FUNC(get)
     };
     case "default": {
-        (GVAR(defaultSettings) getVariable _setting) select 0
+        GVAR(defaultSettings) getVariable [_setting, [nil, nil]] select 0
     };
     default {
         _source = "default"; // exit
@@ -63,7 +50,7 @@ if (isNil "_value") exitWith {
     // setting does not seem to exist
     if (_source == "default") exitWith {nil};
 
-    [_setting, "default", _temp] call FUNC(get);
+    [_setting, "default"] call FUNC(get);
 };
 
 // copy array to prevent accidental overwriting

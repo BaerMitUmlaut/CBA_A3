@@ -30,7 +30,7 @@ private _info = "";
         _value = [_setting, _source] call FUNC(get);
     };
 
-    private _forced = GET_TEMP_NAMESPACE_FORCED(_setting,_source);
+    private _forced = GET_TEMP_NAMESPACE_PRIORITY(_setting,_source);
 
     if (isNil "_forced") then {
         _forced = [_setting, _source] call FUNC(getForced);

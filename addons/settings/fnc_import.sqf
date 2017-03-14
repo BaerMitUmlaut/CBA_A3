@@ -24,7 +24,7 @@ _info = _info call FUNC(parse);
     _x params ["_setting", "_value", "_force"];
 
     SET_TEMP_NAMESPACE_VALUE(_setting,_value,_source);
-    SET_TEMP_NAMESPACE_FORCED(_setting,_force,_source);
+    SET_TEMP_NAMESPACE_PRIORITY(_setting,_force,_source);
 } forEach _info;
 
 if (!isNull (uiNamespace getVariable [QGVAR(display), displayNull])) then {
