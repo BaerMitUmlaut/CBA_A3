@@ -18,6 +18,9 @@ class Extended_PostInit_EventHandlers {
 };
 
 class Extended_DisplayLoad_EventHandlers {
+    class RscDisplayMain {
+        ADDON = QUOTE(_this call (uiNamespace getVariable 'FUNC(loadUserconfig)'));
+    };
     class RscDisplayGameOptions {
         ADDON = QUOTE(\
             if (isNil 'ADDON') then {\

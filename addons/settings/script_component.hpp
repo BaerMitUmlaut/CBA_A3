@@ -94,3 +94,5 @@
 
 #define ICON_ON  "a3\ui_f\data\IGUI\Cfg\Actions\ico_ON_ca.paa"
 #define ICON_OFF "a3\ui_f\data\IGUI\Cfg\Actions\ico_OFF_ca.paa"
+
+#define PATH_SETTINGS_FILE "userconfig\cba\cba_settings.sqf"
