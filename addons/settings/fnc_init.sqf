@@ -11,14 +11,12 @@ Parameters:
     _category    - Category for the settings menu <STRING>
     _valueInfo   - Extra properties of the setting depending of _settingType. See examples below <ANY>
     _isGlobal    - true: all clients share the same state of the setting (optional, default: false) <ARRAY>
-    _script      - Script to execute when setting is changed or forced. (optional) <CODE>
+    _script      - Script to execute when setting is changed. (optional) <CODE>
 
 Returns:
     _return - Error code <NUMBER>
         0: Success, no error
-        1: Empty setting name
-        2: Empty menu category
-        3: Wrong setting type (couldn't find correct default value)
+        1: Failure, error
 
 Examples:
     (begin example)
@@ -58,8 +56,15 @@ params [
     ["_script", {}, [{}]]
 ];
 
-if (_setting isEqualTo "") exitWith {1};
-if (_category isEqualTo "") exitWith {2};
+if (_setting isEqualTo "") exitWith {
+    WARNING("Empty setting name");
+    1
+};
+
+if (_category isEqualTo "") exitWith {
+    WARNING_1("Empty menu category for setting %1",str _setting);
+    1
+};
 
 // --- setting title and tooltip
 _title params [["_displayName", "", [""]], ["_tooltip", "", [""]]];
@@ -114,46 +119,43 @@ switch (toUpper _settingType) do {
     default {/* _defaultValue undefined, exit below */};
 };
 
-if (isNil "_defaultValue") exitWith {3};
+if (isNil "_defaultValue") exitWith {
+    WARNING_1("Wrong type for setting %1 (couldn't find correct default value)",str _setting);
+    1
+};
 
 // --- add setting info to settings namespace
+if (isNil {GVAR(defaultSettings) getVariable _setting}) then {
+    GVAR(allSettings) pushBack _setting;
+};
+
 GVAR(defaultSettings) setVariable [_setting, [_defaultValue, _setting, _settingType, _settingData, _category, _displayName, _tooltip, _isGlobal, _script]];
-GVAR(allSettings) pushBackUnique _setting;
 
 // --- read previous setting values from profile
 private _settingsHash = profileNamespace getVariable [QGVAR(hash), HASH_NULL];
 private _settingInfo = [_settingsHash, toLower _setting] call CBA_fnc_hashGet;
 
 if (!isNil "_settingInfo") then {
-    _settingInfo params ["_value", "_forced"];
+    _settingInfo params ["_value", "_priority"];
 
     if !([_setting, _value] call FUNC(check)) then {
-        _value = [_setting, "default"] call FUNC(get);
-        [_setting, _value, _forced, "client"] call FUNC(set);
         WARNING_1("Invalid value for setting %1. Fall back to default value.",str _setting);
+        _value = [_setting, "default"] call FUNC(get);
     };
 
-    GVAR(clientSettings) setVariable [_setting, [_value, _forced]];
-
-    if (isServer && isMultiplayer) then {
-        GVAR(serverSettings) setVariable [_setting, [_value, _forced], true];
-    };
+    GVAR(clientSettings) setVariable [_setting, [_value, _priority]];
+    GVAR(serverSettings) setVariable [_setting, [_value, _priority], true];
 };
 
 // --- read previous setting values from mission
-_settingsHash = getMissionConfigValue QGVAR(hash);
-
-if (isNil "_settingsHash") then {
-    _settingsHash = HASH_NULL;
-};
-
+_settingsHash = getMissionConfigValue [QGVAR(hash), HASH_NULL];
 _settingInfo = [_settingsHash, toLower _setting] call CBA_fnc_hashGet;
 
 if (!isNil "_settingInfo") then {
-    _settingInfo params ["_value", "_forced"];
+    _settingInfo params ["_value", "_priority"];
 
     if ([_setting, _value] call FUNC(check)) then {
-        GVAR(missionSettings) setVariable [_setting, [_value, _forced]];
+        GVAR(missionSettings) setVariable [_setting, [_value, _priority]];
     };
 };
 

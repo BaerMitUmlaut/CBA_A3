@@ -48,12 +48,7 @@ switch (toLower _source) do {
     case "server": {
         if (isServer) then {
             GVAR(clientSettings) setVariable [_setting, [_value, _priority]];
-
-            if (isMultiplayer) then {
-                GVAR(serverSettings) setVariable [_setting, [_value, _priority], true];
-            } else {
-                GVAR(serverSettings) setVariable [_setting, [_value, _priority]];
-            };
+            GVAR(serverSettings) setVariable [_setting, [_value, _priority], true];
 
             private _settingsHash = profileNamespace getVariable [QGVAR(hash), HASH_NULL];
             [_settingsHash, toLower _setting, [_value, _priority]] call CBA_fnc_hashSet;
