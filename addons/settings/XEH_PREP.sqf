@@ -9,7 +9,6 @@ PREP(export);
 PREP(clear);
 PREP(saveTempData);
 PREP(priority);
-PREP(isOverwritten);
 
 PREP(gui_addonChanged);
 PREP(gui_sourceChanged);

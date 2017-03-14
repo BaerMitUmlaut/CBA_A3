@@ -79,7 +79,7 @@ _display setVariable [QGVAR(controls), []];
         };
 
         // ----- check if altering setting would have no effect
-        private _isOverwritten = [_setting, _source] call FUNC(isOverwritten);
+        private _isPriority = _source isEqualTo ([_setting] call FUNC(priority));
 
         // ----- create setting changer control
         private _controls = _ctrlOptionsGroup getVariable QGVAR(controls);

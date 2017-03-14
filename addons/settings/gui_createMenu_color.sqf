@@ -123,7 +123,7 @@ for "_index" from 0 to (((count _defaultValue max 3) min 4) - 1) do {
 
     (_linkedControls select 2) pushBack [_ctrlSetting, _ctrlSettingEdit];
 
-    if (_isOverwritten) then {
+    if !(_isPriority) then {
         _ctrlSettingName ctrlSetTextColor COLOR_TEXT_OVERWRITTEN;
         _ctrlSetting ctrlSetTooltip localize LSTRING(overwritten_tooltip);
         _ctrlSettingEdit ctrlSetTooltip localize LSTRING(overwritten_tooltip);

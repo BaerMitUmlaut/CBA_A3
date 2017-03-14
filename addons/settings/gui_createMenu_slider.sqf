@@ -84,7 +84,7 @@ _ctrlSettingEdit ctrlAddEventHandler ["KillFocus", {
 
 _linkedControls append [_ctrlSetting, _ctrlSettingEdit];
 
-if (_isOverwritten) then {
+if !(_isPriority) then {
     _ctrlSettingName ctrlSetTextColor COLOR_TEXT_OVERWRITTEN;
     _ctrlSetting ctrlSetTooltip localize LSTRING(overwritten_tooltip);
     _ctrlSettingEdit ctrlSetTooltip localize LSTRING(overwritten_tooltip);

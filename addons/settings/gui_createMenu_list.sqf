@@ -48,7 +48,7 @@ _ctrlSetting ctrlAddEventHandler ["LBSelChanged", {
 
 _linkedControls pushBack _ctrlSetting;
 
-if (_isOverwritten) then {
+if !(_isPriority) then {
     _ctrlSettingName ctrlSetTextColor COLOR_TEXT_OVERWRITTEN;
     _ctrlSetting ctrlSetTooltip localize LSTRING(overwritten_tooltip);
 };

@@ -59,6 +59,6 @@ _ctrlSettingActive ctrlSetPosition [
 ];
 _ctrlSettingActive ctrlCommit 0;
 
-_ctrlSettingActive ctrlSetText selectRandom [ICON_OFF, ICON_ON];
+_ctrlSettingActive ctrlSetText ([ICON_OFF, ICON_ON] select _isPriority);
 
 _linkedControls pushBack _ctrlSettingActive;
