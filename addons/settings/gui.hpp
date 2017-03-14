@@ -265,3 +265,104 @@ class GVAR(presets) {
         };
     };
 };
+
+class RscControlsGroupNoScrollbars;
+class RscButton;
+class RscStatic;
+class CBA_Setting_Row_Base: RscControlsGroupNoScrollbars {
+    x = 0;
+    y = 0;
+    w = QUOTE(SETTING_ROW_WIDTH);
+    h = QUOTE(SETTING_ROW_HEIGHT);
+
+    class controls {
+        /*
+            Structure (P = padding):
+            | <-------------------------- full width --------------------------> |
+            | column               | column               | column               |
+            | P description      P | P specific control P | P priority P reset P |
+         */
+        class Background: RscStatic {
+            idc = 99;
+            x = 0;
+            y = 0;
+            w = QUOTE(SETTING_ROW_WIDTH);
+            h = QUOTE(SETTING_ROW_HEIGHT);
+        };
+        class Description: RscText {
+            idc = 10;
+            x = QUOTE(SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(SETTING_COLUMN_WIDTH - 2 * SETTING_COLUMN_PADDING);
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+        class Priority: RscCombo {
+            idc = 30;
+            x = QUOTE(2 * SETTING_COLUMN_WIDTH + SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(SETTING_COLUMN_WIDTH - 3 * SETTING_COLUMN_PADDING - (H_TO_W(SETTING_ROW_HEIGHT)));
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+        class Reset: RscButton {
+            idc = 40;
+            x = QUOTE(SETTING_ROW_WIDTH - SETTING_COLUMN_PADDING - H_TO_W(SETTING_ROW_HEIGHT));
+            y = 0;
+            w = QUOTE(H_TO_W(SETTING_ROW_HEIGHT));
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+    };
+};
+
+class CBA_Setting_Row_Checkbox: CBA_Setting_Row_Base {
+    class controls {
+        class Checkbox: RscCheckBox {
+            idc = 20;
+            x = QUOTE(SETTING_COLUMN_WIDTH + SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(H_TO_W(SETTING_ROW_HEIGHT));
+            h = QUOTE(SETTING_ROW_HEIGHT);
+        };
+    };
+};
+
+class CBA_Setting_Row_Combo: CBA_Setting_Row_Base {
+    class controls {
+        class Combo: RscCombo {
+            idc = 20;
+            x = QUOTE(SETTING_COLUMN_WIDTH + SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(SETTING_COLUMN_WIDTH - 2 * SETTING_COLUMN_PADDING);
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+    };
+};
+
+class CBA_Setting_Row_Slider: CBA_Setting_Row_Base {
+    class controls {
+        class Slider: RscXSliderH {
+            idc = 20;
+            x = QUOTE(SETTING_COLUMN_WIDTH + SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(SETTING_COLUMN_WIDTH - 2 * SETTING_COLUMN_PADDING);
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+    };
+};
+
+class CBA_Setting_Row_Color: CBA_Setting_Row_Base {
+    class controls {
+        class Color: RscButton {
+            idc = 20;
+            x = QUOTE(SETTING_COLUMN_WIDTH + SETTING_COLUMN_PADDING);
+            y = 0;
+            w = QUOTE(SETTING_COLUMN_WIDTH - 2 * SETTING_COLUMN_PADDING);
+            h = QUOTE(SETTING_ROW_HEIGHT);
+            sizeEx = QUOTE(SETTING_SIZE_TEXT);
+        };
+    };
+};

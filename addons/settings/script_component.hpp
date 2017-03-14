@@ -105,3 +105,16 @@
 #define ICON_OFF "a3\ui_f\data\IGUI\Cfg\Actions\ico_OFF_ca.paa"
 
 #define PATH_SETTINGS_FILE "userconfig\cba\cba_settings.sqf"
+
+#define SETTING_ROW_WIDTH         (POS_W(37))
+#define SETTING_ROW_HEIGHT        (pixelGrid * pixelH * 20)
+#define SETTING_ROW_PADDING_INNER (pixelGrid * pixelH * 2)
+#define SETTING_ROW_PADDING_OUTER (pixelGrid * pixelH * 4)
+
+#define SETTING_COLUMN_WIDTH      (1/3 * SETTING_ROW_WIDTH)
+#define SETTING_COLUMN_PADDING    (pixelGrid * pixelW * 2)
+
+#define SETTING_SIZE_TEXT         (pixelGrid * pixelH * 18)
+
+#define H_TO_W(height) (round (height / pixelH) * pixelW)
+#define W_TO_H(height) (round (height / pixelW) * pixelH)
